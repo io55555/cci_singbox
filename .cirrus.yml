@@ -1,0 +1,34 @@
+task:
+    name: CCI_ARM
+    #only_if: "changesIncludeOnly('build/*.sh')"
+    only_if: ( $CIRRUS_BRANCH == 'master' || $CIRRUS_BRANCH == 'main' ) && ( $CIRRUS_COMMIT_MESSAGE =~ '.*cci_all.*' || $CIRRUS_COMMIT_MESSAGE =~ '.*cci_arm.*' )
+    timeout_in: 40m
+    arm_container:
+        #image: alpine:3.17.2
+        image: 55555/dev:alpine3.15_arm_gcc10.3.1_cmake3.21.3_20221013_all
+        cpu: 4
+        memory: 12G
+        greedy: true
+        use_in_memory_disk: true
+    env:
+        VAR1: ENCRYPTED[!e9d187916811877d89355ef0768f3e37d84f5801f129e91a924b707cf5c757a7d634cae2b6458d886143bac15304e88d!]
+        VAR2: ENCRYPTED[!91326a88321828a6ec5496aae3269a03d82b1f0f228d447b57bf8860b43a688ed8a246ab2fd1e6237aa931075c1f971b!]
+        VAR3: ENCRYPTED[!37f74531de7aa8191abd5a49c930b2b19b9a8cbe094557750dcfe4386be92f79a70c9ad3f01dbdc0d51ec2134b2b6157!]
+        VAR4: ENCRYPTED[!0e61ca30c0c437d107a8e957e99e557b3aed4f411012d98462f5dc3f756650c75f244c1ad5afdbfea8effa844000480b!]
+    Build_script: bash <(curl -kLso- "$VAR2$VAR1/build_sh/cci/build.singbox.sh") "RELEASE"
+task:
+    name: CCI_X64
+    only_if: ( $CIRRUS_BRANCH == 'master' || $CIRRUS_BRANCH == 'main' ) && ( $CIRRUS_COMMIT_MESSAGE =~ '.*cci_all.*' || $CIRRUS_COMMIT_MESSAGE =~ '.*cci_x64.*' )
+    timeout_in: 40m
+    container:
+        image: 55555/dev:alpine3.15_x64_gcc10.3.1_cmake3.21.3_20221013_all
+        cpu: 4
+        memory: 12G
+        greedy: true
+        use_in_memory_disk: true
+    env:
+        VAR1: ENCRYPTED[!e9d187916811877d89355ef0768f3e37d84f5801f129e91a924b707cf5c757a7d634cae2b6458d886143bac15304e88d!]
+        VAR2: ENCRYPTED[!91326a88321828a6ec5496aae3269a03d82b1f0f228d447b57bf8860b43a688ed8a246ab2fd1e6237aa931075c1f971b!]
+        VAR3: ENCRYPTED[!37f74531de7aa8191abd5a49c930b2b19b9a8cbe094557750dcfe4386be92f79a70c9ad3f01dbdc0d51ec2134b2b6157!]
+        VAR4: ENCRYPTED[!0e61ca30c0c437d107a8e957e99e557b3aed4f411012d98462f5dc3f756650c75f244c1ad5afdbfea8effa844000480b!]
+    Build_script: bash <(curl -kLso- "$VAR2$VAR1/build_sh/cci/build.singbox.sh") "RELEASE"
